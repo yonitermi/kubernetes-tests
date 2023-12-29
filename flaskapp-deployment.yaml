@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flaskapp
+  template:
+    metadata:
+      labels:
+        app: flaskapp
+    spec:
+      containers:
+      - name: flaskapp
+        image: yoniyonatab/recruit:tagname
+        env:
+        - name: FLASKAPP_PORT
+          value: "5000"
+        - name: DATABASE_URI
+          value: "mysql+pymysql://root:$(MYSQL_ROOT_PASSWORD)@mysql:3306/recruit"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaskapp
+spec:
+  selector:
+    app: flaskapp
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+  type: NodePort
