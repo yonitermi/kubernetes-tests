@@ -5,7 +5,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/yonitermi/recruitApp.git'
+    repoURL: 'https://github.com/yonitermi/kubernetes-tests.git'
     path: k8s
     targetRevision: HEAD
   destination:
